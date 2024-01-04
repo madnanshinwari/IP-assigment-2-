@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Country Information</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #333;
+        color: white;
+        padding: 15px;
+      }
+
+      #country-info-container {
+        margin-top: 20px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      #get-country-btn {
+        padding: 10px;
+        font-size: 10px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Random Country Information</h1>
+    </header>
+
+    <div id="country-info-container">
+      <h2>Country Information</h2>
+      <p id="country-name">
+        Click the button to get information about a random country!
+      </p>
+      <p id="country-capital"></p>
+      <p id="country-population"></p>
+      <p id="country-region"></p>
+    </div>
+
+    <button id="get-country-btn" onclick="getRandomCountryInfo()">
+      Get Random Country Information
+    </button>
+
+    <script>
+      function getRandomCountryInfo() {
+        const countryNameElement = document.getElementById("country-name");
+        const countryCapitalElement =
+          document.getElementById("country-capital");
+        const countryPopulationElement =
+          document.getElementById("country-population");
+        const countryRegionElement = document.getElementById("country-region");
+
+        const apiUrl = "https://restcountries.com/v2/all";
+
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            const randomIndex = Math.floor(Math.random() * data.length);
+            const randomCountry = data[randomIndex];
+
+            countryNameElement.innerText = `Country: ${randomCountry.name}`;
+            countryCapitalElement.innerText = `Capital: ${
+              randomCountry.capital || "N/A"
+            }`;
+            countryPopulationElement.innerText = `Population: ${
+              randomCountry.population || "N/A"
+            }`;
+            countryRegionElement.innerText = `Region: ${
+              randomCountry.region || "N/A"
+            }`;
+          })
+          .catch((error) => {
+            console.error("Error fetching random country information:", error);
+            countryNameElement.innerText =
+              "Failed to fetch country information. Please try again.";
+          });
+      }
+    </script>
+  </body>
+</html>
